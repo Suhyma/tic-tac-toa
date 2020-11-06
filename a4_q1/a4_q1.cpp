@@ -24,6 +24,7 @@ int X_turn(string arr[], int array_size, int x);
 //          arr[] - represents the string array for the printed tic-tac-toe board
 //          array_size - the size of the 1D array (16 spaces on the board)
 
+
 int O_turn(string arr[], int array_size, int x);
 // PURPOSE: Takes user input for which spot on the board they want to claim and places an O there, performs error checking for if the desired spot is non existent 
 //          or already taken, and also adjusts for spacing on the board
@@ -56,7 +57,7 @@ int X_turn(string arr[], int array_size, int x) { // whenever it's X's turn, cha
     cout << "Player X's move:" << endl;
     cin >> x;
 
-    while (x < 1 || x > 16) {
+    while (x < 1 || x > BOARD_SIZE) {
         cout << "Invalid input! Please enter a number from 1-16." << endl;
         cin >> x;
     } // error checking: if the number they enter doesn't exist on the board
@@ -69,15 +70,14 @@ int X_turn(string arr[], int array_size, int x) { // whenever it's X's turn, cha
         index = x - 1;
     } // error checking: if the spot they choose is already taken
 
-    if (index >= 9 && index <= 15) { // adjusts the spacing for double digit #s
-        arr[index] = "X ";
+    if (index >= 9 && index <= BOARD_SIZE - 1) { // adjusts the spacing for double digit #s
+        arr[index] = "X";
     }
 
     else {
         arr[index] = "X";
     }
     return index;
-
 }
 
 
@@ -87,7 +87,7 @@ int O_turn(string arr[], int array_size, int x) { // whenever it's O's turn, cha
     cout << "Player O's move:" << endl;
     cin >> x;
 
-    while (x < 1 || x > 16) {
+    while (x < 1 || x > BOARD_SIZE) {
         cout << "Invalid input! Please enter a number from 1-16." << endl;
         cin >> x;
     } // error checking: if the number they enter doesn't exist on the board
@@ -100,8 +100,8 @@ int O_turn(string arr[], int array_size, int x) { // whenever it's O's turn, cha
         index = x - 1;
     } // error checking: if the spot they choose is already taken
 
-    if (index >= 9 && index <= 15) { // adjust spacing for double digit #s
-        arr[index] = "O ";
+    if (index >= 9 && index <= BOARD_SIZE - 1) { // adjust spacing for double digit #s
+        arr[index] = "O";
     }
 
     else {
@@ -114,7 +114,6 @@ int O_turn(string arr[], int array_size, int x) { // whenever it's O's turn, cha
 void enter_moves(int& x_score, int& o_score, int& num_ties, bool& first_move_X) {
 
     int entry = 0;
-    int array_size = 16;
     int index = 0;
     bool is_X_turn = first_move_X;
     bool is_O_turn = !first_move_X;
@@ -123,12 +122,11 @@ void enter_moves(int& x_score, int& o_score, int& num_ties, bool& first_move_X) 
     bool O_win = false;
     int player = 1;
 
-
-    string board[16] = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" };
+    string board[BOARD_SIZE] = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" };
 
     cout << "Welcome to Tic Tac Toe! For the first round, X will start. Afterwards, the starting player will alternate between X and O." << endl;
 
-    for (int i = array_size; i > 0 && !X_win && !O_win; i--) { // keeps asking for user input until all spots are filled OR until a player wins
+    for (int i = BOARD_SIZE; i > 0 && !X_win && !O_win; i--) { // keeps asking for user input until all spots are filled OR until a player wins
 
         cout << board[0] << "      " << board[1] << "      " << board[2] << "      " << board[3] << endl; // printing the board every turn 
         cout << board[4] << "      " << board[5] << "      " << board[6] << "      " << board[7] << endl;
@@ -139,14 +137,14 @@ void enter_moves(int& x_score, int& o_score, int& num_ties, bool& first_move_X) 
         cout << "Please enter the number corresponding to the location you would like to claim." << endl;
 
         if (is_X_turn) { // X's turn to play
-            index = X_turn(board, array_size, entry);
+            index = X_turn(board, BOARD_SIZE, entry);
             is_X_turn = false;
             is_O_turn = true;
             check_for_win(player, "X", index, X_win, board);
         }
 
         else if (is_O_turn) { // O's turn to play
-            index = O_turn(board, array_size, entry);
+            index = O_turn(board, BOARD_SIZE, entry);
             is_O_turn = false;
             is_X_turn = true;
             check_for_win(player, "O", index, O_win, board);
@@ -267,6 +265,7 @@ void invoke_start_tic_tac_toe_simulation() {
         //[INPUT] Do you still want to play?
         continue_game_check(keep_playing);
 
+        //[PROCESSING} Swtiches the who the first player is
         first_move_X = !first_move_X;
     }
     //[OUTPUT] Outputs the final stats when the game ends
@@ -281,4 +280,3 @@ int main()
 {
     invoke_start_tic_tac_toe_simulation();
 }
-//-----------------------------------------
