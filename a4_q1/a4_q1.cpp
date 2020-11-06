@@ -8,6 +8,7 @@ const int BOARD_LENGTH = 4;
 void invoke_start_tic_tac_toe_simulation();
 //PURPOSE:  Runs the steps of this program (tic-tac-toe simulation, A4 Q1)
 
+
 void enter_moves(int& x_score, int& o_score, int& num_ties, bool& first_move_X);
 int X_turn(string arr[], int array_size, int x);
 int O_turn(string arr[], int array_size, int x);
@@ -22,115 +23,15 @@ void check_for_win(int player, string player_mark, int mark_position, bool& play
 //          gameboard - a 4x4 2D array that keeps track of the marks made on the board
 //OUTPUTS:  n/a, pass-by-reference
 
-void check_for_win(int player, string player_mark, int mark_position, bool& player_win, string gameboard[]) {
-    
-    //Step 1: Check Row
-    int current_row = (mark_position) / BOARD_LENGTH;
-    bool found_win = true;
-
-    //runs down the column, checking if they are all equal to the current player's mark. Stops once a non-matching mark is found OR if the player has won from a previous check
-    for (int col = 0; col < 4 && !player_win && found_win; col++) {
-        //if all the previous ones matched AND the current column also matches, keep true, else, set to false
-        found_win = found_win && (gameboard[current_row * BOARD_LENGTH + col] == player_mark);
-    }
-
-    player_win = found_win;
-
-    //Step 2: Check the column
-    int current_col = (mark_position) % BOARD_LENGTH;
-    found_win = true;
-
-    for (int row = 0; row < 4 && !player_win && found_win; row++) {
-        //if all the previous ones matched AND the current row also matches, keep true, else, set to false
-        found_win = found_win && (gameboard[row * BOARD_LENGTH + current_col] == player_mark);
-    }
-    player_win = found_win;
-
-    //Step 3: Checks the diagonals (top left to bottom right)
-    //checks if the mark was made in the TL to BR diagonal
-    if (current_row == current_col) {
-        found_win = true;
-
-        for (int i = 0; i < 4 && !player_win && found_win; i++) {
-            found_win = found_win && (gameboard[i * BOARD_LENGTH + i] == player_mark);
-        }
-
-        player_win = found_win;
-    }
-    
-    //Step 4: Checks the diagonals (bottom left to top right)
-    //checks if the mark was made in the BL to TR diagonal
-    if ((current_row + current_col) == 3) {
-        found_win = true;
-
-        for (int i = 0; i < 4 && !player_win && found_win; i++) {
-            found_win = found_win && (gameboard[i * 4 + (BOARD_LENGTH - 1 - i)] == player_mark);
-        }
-
-        player_win = found_win;
-    }
-}
+void continue_game_check(bool& keep_playing);
+//PURPOSE:  Asks the users to see if they want to continue playing the game or to stop
+//INPUT:    keep_playing - reference to boolean that tracks whether or not the game continues (true if continues, false otherwise)
+//OUTPUT:   n/a, pass by reference
 
 
-void invoke_start_tic_tac_toe_simulation() {
-    //[SETUP] Declare and initialize variables
-    int x_score = 0, o_score = 0, num_ties = 0;
+// ***** FUNCTION DEFINITIONS *****
 
-
-    bool keep_playing = true;
-    string continue_check;
-
-    bool first_move_X = true; //represents which player it going first this round, X first is true, O first is false
-
-    while (keep_playing) {
-        //[INPUT/OUTPUT] Output game board, Get next move, Store it
-        enter_moves(x_score, o_score, num_ties, first_move_X);
-
-        //[INPUT] Do you still want to play?
-
-        cout << "Do you still want to play? Enter 'Y' to continue or 'N' to end: ";
-        cin >> continue_check;
-
-        while (continue_check != "Y" && continue_check != "N") {
-            cout << "Invalid input. Do you still want to play? Enter 'Y' to continue or 'N' to end: ";
-            cin >> continue_check;
-        }
-
-        if (continue_check == "Y") {
-            keep_playing = true;
-        } 
-        else if (continue_check == "N") {
-            keep_playing = false;
-        }
-
-        first_move_X = !first_move_X;
-    }
-    //[OUTPUT]
-    cout << "Game Over!" << endl;
-    cout << "Player 1 earned " << x_score << " point(s)." << endl;
-    cout << "Player 2 earned " << o_score << " point(s)." << endl;
-    cout << "There were " << num_ties << " ties." << endl;
-}
-
-int main()
-{
-    int player = 1;
-    string mark = "X";
-    int position = 1;
-    bool has_won = false;
-    string X = "X";
-    string O = "O";
-    string board[16] = {X, O, X, X, 
-                      X, X, X, X, 
-                      O, X ,X, O, 
-                      X, O, O, X };
-
-
-    invoke_start_tic_tac_toe_simulation();
-}
-//-----------------------------------------
-
-//allows for X palyer's turn, take in an input (checks that its valid # and not filled), and adds to the array----
+//allows for X player's turn, take in an input (checks that its valid # and not filled), and adds to the array----
 int X_turn(string arr[], int array_size, int x) { // whenever it's X's turn, changes the number on board to X
 
     int index = 0;
@@ -249,7 +150,126 @@ void enter_moves(int& x_score, int& o_score, int& num_ties, bool& first_move_X) 
         cout << "*** ROUND OVER. It was a tie! ***" << endl;
         num_ties++;
     }
+}
+
+void check_for_win(int player, string player_mark, int mark_position, bool& player_win, string gameboard[]) {
+
+    //Step 1: Declare and initialize variables
+    int current_row = (mark_position) / BOARD_LENGTH;
+    int current_col = (mark_position) % BOARD_LENGTH;
+    bool found_win = true; //keeps track of if a chain of 4 has been found (true if yes)
+
+    //Step 2.1: Checks if the row of the value just added has a chain of 4. Stops once a non-matching mark is found 
+    //        OR if the player has won from a previous check
+    for (int col = 0; col < BOARD_LENGTH && !player_win && found_win; col++) {
+        //true if all the previous spaces matched AND the value in current column also matches
+        found_win = found_win && (gameboard[current_row * BOARD_LENGTH + col] == player_mark);
+    }
+
+    //Step 2.2: Updates the external variable tracking if a win was found
+    player_win = found_win;
+
+    //Step 3.1: Checks if the column of the value just added has a chain of 4. Stops once a non-matching mark is found
+    //          OR if the player has won from a previous check
+
+    found_win = true; //reset tracking variable
+
+    for (int row = 0; row < BOARD_LENGTH && !player_win && found_win; row++) {
+        //true if all previous spaces matched AND the value in current row also matches
+        found_win = found_win && (gameboard[row * BOARD_LENGTH + current_col] == player_mark);
+    }
+
+    //Step 3.2: Updates the external variable tracking if a win was found
+    player_win = found_win;
+
+    //Step 4: Checks if the mark was added on the diagonal from the top left to bottom right, 
+    //          then checks if there is a chain of 4 in the diagonal
+    if (current_row == current_col) {
+
+        found_win = true;
+
+        for (int i = 0; i < BOARD_LENGTH && !player_win && found_win; i++) {
+            found_win = found_win && (gameboard[i * BOARD_LENGTH + i] == player_mark);
+        }
+
+        //Step 4.2: Updates the external variable tracking if a win was found
+        player_win = found_win;
+    }
+
+    //Step 5: Checks if the mark was added on the diagonal from the bottom left to top right, 
+    //          then checks if there is a chain of 4 in the diagonal
+    if ((current_row + current_col) == 3) {
+
+        found_win = true;
+
+        for (int i = 0; i < BOARD_LENGTH && !player_win && found_win; i++) {
+            found_win = found_win && (gameboard[i * BOARD_LENGTH + (BOARD_LENGTH - 1 - i)] == player_mark);
+        }
+
+        //Step 5.2: Updates the external variable tracking if a win was found
+        player_win = found_win;
+    }
+}
+
+void continue_game_check(bool& keep_playing) {
+
+    //Step 1: Declare and initialize variables
+    string continue_input;
+
+    //Step 2: Ask initially to see if the players want to continue
+    cout << "Do you still want to play? Enter 'Y' to continue or 'N' to end: ";
+    cin >> continue_input;
+
+    //Step 3: Error checking to ensure valid input is entered (either Y or N)
+    while (continue_input != "Y" && continue_input != "N") {
+        cout << "Invalid input. Do you still want to play? Enter 'Y' to continue or 'N' to end: ";
+        cin >> continue_input;
+    }
+
+    //Step 4: Adjusts boolean variable to continue or stop the game based on the input
+    if (continue_input == "Y") {
+        keep_playing = true;
+    }
+    else if (continue_input == "N") {
+        keep_playing = false;
+    }
+}
+
+
+void invoke_start_tic_tac_toe_simulation() {
+    //[SETUP] Declare and initialize variables
+    int x_score = 0, o_score = 0, num_ties = 0;
+
+    bool keep_playing = true;
+
+    bool first_move_X = true; //represents which player it going first this round, X first is true, O first is false
+
+    //[PROCESSING] This continues running until the players choose to end the game
+    while (keep_playing) {
+
+        //[INPUT/OUTPUT/PROCESSING] Runs one complete round of the game 
+        enter_moves(x_score, o_score, num_ties, first_move_X);
+
+        //[INPUT] Do you still want to play?
+        continue_game_check(keep_playing);
+
+        first_move_X = !first_move_X;
+    }
+    //[OUTPUT] Outputs the final stats when the game ends
+    cout << endl << "********************* GAME OVER! *********************" << endl;
+    cout << "Player 1 earned " << x_score << " point(s)." << endl;
+    cout << "Player 2 earned " << o_score << " point(s)." << endl;
+    cout << "There were " << num_ties << " ties." << endl;
+    cout << "******************************************************" << endl;
 
 }
+
+int main()
+{
+    invoke_start_tic_tac_toe_simulation();
+}
+//-----------------------------------------
+
+
 
 
