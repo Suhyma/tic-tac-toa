@@ -8,11 +8,30 @@ const int BOARD_LENGTH = 4;
 void invoke_start_tic_tac_toe_simulation();
 //PURPOSE:  Runs the steps of this program (tic-tac-toe simulation, A4 Q1)
 
-
 void enter_moves(int& x_score, int& o_score, int& num_ties, bool& first_move_X);
-int X_turn(string arr[], int array_size, int x);
-int O_turn(string arr[], int array_size, int x);
+// PURPOSE: Prints initial tic-tac-toe board and alternates turns for player X & O by calling either X_turn or O_turn functions
+// INPUTS:  entry - allows players to enter an integer corresponding to the spot they want to claim on the board
+//          x_score, o_score - counts each player's score through all the rounds played
+//          num_ties - counts the number of ties through all the rounds played
+//          first_move_X - defines when player X gets the first move, alternates between true & false every game
+//OUTPUTS:  Prints tic-tac-toe board after each turn, displaying the spots claimed by each player and the remaining "empty" spots
 
+
+int X_turn(string arr[], int array_size, int x);
+// PURPOSE: Takes user input for which spot on the board they want to claim and places an X there, performs error checking for if the desired spot is non existent 
+//          or already taken, and also adjusts for spacing on the board
+// INPUTS:  x - the user's entry for the desired spot
+//          arr[] - represents the string array for the printed tic-tac-toe board
+//          array_size - the size of the 1D array (16 spaces on the board)
+
+
+int O_turn(string arr[], int array_size, int x);
+// PURPOSE: Takes user input for which spot on the board they want to claim and places an O there, performs error checking for if the desired spot is non existent 
+//          or already taken, and also adjusts for spacing on the board
+// INPUTS:  x - the user's entry for the desired spot
+//          arr[] - represents the string array for the printed tic-tac-toe board
+//          array_size - the size of the 1D array (16 spaces on the board)
+// OUTPUTS: returns index
 
 void check_for_win(int player, string player_mark, int mark_position, bool& player_win, string gameboard[]);
 //PURPOSE:  Checks the row, column, and diagonals of the newly added mark to see if there is winning chain of four
@@ -138,7 +157,6 @@ void enter_moves(int& x_score, int& o_score, int& num_ties, bool& first_move_X) 
     if (X_win) {
         cout << "*** ROUND OVER. Player X wins! ***" << endl;
         x_score++;
-
     }
 
     if (O_win) {
@@ -235,13 +253,10 @@ void continue_game_check(bool& keep_playing) {
     }
 }
 
-
 void invoke_start_tic_tac_toe_simulation() {
     //[SETUP] Declare and initialize variables
     int x_score = 0, o_score = 0, num_ties = 0;
-
     bool keep_playing = true;
-
     bool first_move_X = true; //represents which player it going first this round, X first is true, O first is false
 
     //[PROCESSING] This continues running until the players choose to end the game
@@ -261,7 +276,6 @@ void invoke_start_tic_tac_toe_simulation() {
     cout << "Player 2 earned " << o_score << " point(s)." << endl;
     cout << "There were " << num_ties << " ties." << endl;
     cout << "******************************************************" << endl;
-
 }
 
 int main()
@@ -269,7 +283,3 @@ int main()
     invoke_start_tic_tac_toe_simulation();
 }
 //-----------------------------------------
-
-
-
-
