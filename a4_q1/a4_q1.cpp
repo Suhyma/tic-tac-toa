@@ -24,7 +24,6 @@ int X_turn(string arr[], int array_size, int x);
 //          arr[] - represents the string array for the printed tic-tac-toe board
 //          array_size - the size of the 1D array (16 spaces on the board)
 
-
 int O_turn(string arr[], int array_size, int x);
 // PURPOSE: Takes user input for which spot on the board they want to claim and places an O there, performs error checking for if the desired spot is non existent 
 //          or already taken, and also adjusts for spacing on the board
@@ -71,7 +70,7 @@ int X_turn(string arr[], int array_size, int x) { // whenever it's X's turn, cha
     } // error checking: if the spot they choose is already taken
 
     if (index >= 9 && index <= 15) { // adjusts the spacing for double digit #s
-        arr[index] = "X";
+        arr[index] = "X ";
     }
 
     else {
@@ -102,7 +101,7 @@ int O_turn(string arr[], int array_size, int x) { // whenever it's O's turn, cha
     } // error checking: if the spot they choose is already taken
 
     if (index >= 9 && index <= 15) { // adjust spacing for double digit #s
-        arr[index] = "O";
+        arr[index] = "O ";
     }
 
     else {
