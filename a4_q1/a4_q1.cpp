@@ -9,8 +9,29 @@ void invoke_start_tic_tac_toe_simulation();
 //PURPOSE:  Runs the steps of this program (tic-tac-toe simulation, A4 Q1)
 
 void enter_moves(int& x_score, int& o_score, int& num_ties, bool& first_move_X);
+// PURPOSE: Prints initial tic-tac-toe board and alternates turns for player X & O by calling either X_turn or O_turn functions
+// INPUTS:  entry - allows players to enter an integer corresponding to the spot they want to claim on the board
+//          x_score, o_score - counts each player's score through all the rounds played
+//          num_ties - counts the number of ties through all the rounds played
+//          first_move_X - defines when player X gets the first move, alternates between true & false every game
+//OUTPUTS:  Prints tic-tac-toe board after each turn, displaying the spots claimed by each player and the remaining "empty" spots
+
+
 int X_turn(string arr[], int array_size, int x);
+// PURPOSE: Takes user input for which spot on the board they want to claim and places an X there, performs error checking for if the desired spot is non existent 
+//          or already taken, and also adjusts for spacing on the board
+// INPUTS:  x - the user's entry for the desired spot
+//          arr[] - represents the string array for the printed tic-tac-toe board
+//          array_size - the size of the 1D array (16 spaces on the board)
+
+
 int O_turn(string arr[], int array_size, int x);
+// PURPOSE: Takes user input for which spot on the board they want to claim and places an O there, performs error checking for if the desired spot is non existent 
+//          or already taken, and also adjusts for spacing on the board
+// INPUTS:  x - the user's entry for the desired spot
+//          arr[] - represents the string array for the printed tic-tac-toe board
+//          array_size - the size of the 1D array (16 spaces on the board)
+// OUTPUTS: returns index
 
 
 void check_for_win(int player, string player_mark, int mark_position, bool& player_win, string gameboard[]);
@@ -130,7 +151,7 @@ int main()
 }
 //-----------------------------------------
 
-//allows for X palyer's turn, take in an input (checks that its valid # and not filled), and adds to the array----
+//allows for X player's turn, take in an input (checks that its valid # and not filled), and adds to the array----
 int X_turn(string arr[], int array_size, int x) { // whenever it's X's turn, changes the number on board to X
 
     int index = 0;
@@ -151,7 +172,7 @@ int X_turn(string arr[], int array_size, int x) { // whenever it's X's turn, cha
     } // error checking: if the spot they choose is already taken
 
     if (index >= 9 && index <= 15) { // adjusts the spacing for double digit #s
-        arr[index] = "X";
+        arr[index] = "X ";
     }
 
     else {
@@ -182,7 +203,7 @@ int O_turn(string arr[], int array_size, int x) { // whenever it's O's turn, cha
     } // error checking: if the spot they choose is already taken
 
     if (index >= 9 && index <= 15) { // adjust spacing for double digit #s
-        arr[index] = "O";
+        arr[index] = "O ";
     }
 
     else {
