@@ -1,3 +1,15 @@
+/* SYDE 121 ASSIGNMENT 4 - Allen Liu & Suhyma Rahman
+* For testing this program, there were 3 main outcomes to test: player X win, player O win, and a tie. In both X and O wins, the program immediately recognizes a win
+* when there is a 4-in-a-row match horizontally, vertically, and diagonally, regardless of the order the player entered the numbers. When there is a tie, the program
+* successfully predicts it even before the last player makes their move, which would fill up the board completely with no matches. Some other details to test for included
+* ensuring the players only entered numbers that existed on the board and spots that aren't already taken. This program performs the error checking every turn using while
+* loops. One limitation to this program would be that it is only useful for two players. For a better game experience, it would be beneficial to have the computer play
+* as an opponent.
+*
+*
+*
+*/
+
 #include <iostream>
 
 using namespace std;
@@ -70,13 +82,8 @@ int X_turn(string arr[], int array_size, int x) { // whenever it's X's turn, cha
         index = x - 1;
     } // error checking: if the spot they choose is already taken
 
-    if (index >= 9 && index <= BOARD_SIZE - 1) { // adjusts the spacing for double digit #s
-        arr[index] = "X";
-    }
+    arr[index] = "X"; // places X in the desired location
 
-    else {
-        arr[index] = "X";
-    }
     return index;
 }
 
@@ -100,13 +107,8 @@ int O_turn(string arr[], int array_size, int x) { // whenever it's O's turn, cha
         index = x - 1;
     } // error checking: if the spot they choose is already taken
 
-    if (index >= 9 && index <= BOARD_SIZE - 1) { // adjust spacing for double digit #s
-        arr[index] = "O";
-    }
+    arr[index] = "O"; // places O in the desired location
 
-    else {
-        arr[index] = "O";
-    }
     return index;
 }
 
@@ -128,10 +130,10 @@ void enter_moves(int& x_score, int& o_score, int& num_ties, bool& first_move_X) 
 
     for (int i = BOARD_SIZE; i > 0 && !X_win && !O_win; i--) { // keeps asking for user input until all spots are filled OR until a player wins
 
-        cout << board[0] << "      " << board[1] << "      " << board[2] << "      " << board[3] << endl; // printing the board every turn 
-        cout << board[4] << "      " << board[5] << "      " << board[6] << "      " << board[7] << endl;
-        cout << board[8] << "      " << board[9] << "     " << board[10] << "     " << board[11] << endl;
-        cout << board[12] << "     " << board[13] << "     " << board[14] << "     " << board[15] << endl;
+        cout << board[0] << "\t" << board[1] << "\t" << board[2] << "\t" << board[3] << endl; // printing the board every turn 
+        cout << board[4] << "\t" << board[5] << "\t" << board[6] << "\t" << board[7] << endl;
+        cout << board[8] << "\t" << board[9] << "\t" << board[10] << "\t" << board[11] << endl;
+        cout << board[12] << "\t" << board[13] << "\t" << board[14] << "\t" << board[15] << endl;
         cout << " " << endl;
 
         cout << "Please enter the number corresponding to the location you would like to claim." << endl;
