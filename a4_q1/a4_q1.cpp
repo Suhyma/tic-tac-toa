@@ -1,11 +1,14 @@
 /* SYDE 121 ASSIGNMENT 4 - Allen Liu & Suhyma Rahman
+*
 * For testing this program, there were 3 main outcomes to test: player X win, player O win, and a tie. In both X and O wins, the program immediately recognizes a win
 * when there is a 4-in-a-row match horizontally, vertically, and diagonally, regardless of the order the player entered the numbers. When there is a tie, the program
 * successfully predicts it even before the last player makes their move, which would fill up the board completely with no matches. Some other details to test for included
 * ensuring the players only entered numbers that existed on the board and spots that aren't already taken. This program performs the error checking every turn using while
 * loops. One limitation to this program would be that it is only useful for two players. For a better game experience, it would be beneficial to have the computer play
-* as an opponent.
+* as an opponent. Another limitation is that the programs does not handle inputs that are non-integer values (eg. 'c', "hello"). While the program checks for invalid integer inputs, other values cause it to fail. This causes the program to continually output an error, but this is not expected to be a major problem since the game board indicates to the user to enter an intger.
 *
+* Program Steps (Top-Down Approach)
+* This project was completed using a top-down approach since it was easier to collaborate and coordinate as a team. The program has an wrapping function that encompasses all the code, and is used to keep track of score in between rounds as well as to output statments at the start and end of the game. A repeating loop within this function (while loop) is used to play one round of the game. A function (enter_moves) is called which allows the current player to select a spot on the grid, while also outputting the current board to the console for reference. After error checking the input, it stores the value to the board and calls another function (check_for_win) to determine if a chain of 4 has occured. This continues for each player until the round is over, upon which another function (continue_game_check) is called to ask the players if they want to continue. After indicating the end the game, the program exits the while loop and outputs the final game score.
 *
 *
 */
@@ -126,7 +129,7 @@ void enter_moves(int& x_score, int& o_score, int& num_ties, bool& first_move_X) 
 
     string board[BOARD_SIZE] = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" };
 
-    cout << "Welcome to Tic Tac Toe! For the first round, X will start. Afterwards, the starting player will alternate between X and O." << endl;
+    cout << endl << "*** NEW ROUND! *** For this round, player " << (first_move_X ? "X" : "O") << " will go first." << endl;
 
     for (int i = BOARD_SIZE; i > 0 && !X_win && !O_win; i--) { // keeps asking for user input until all spots are filled OR until a player wins
 
@@ -154,17 +157,17 @@ void enter_moves(int& x_score, int& o_score, int& num_ties, bool& first_move_X) 
     }
 
     if (X_win) {
-        cout << "*** ROUND OVER. Player X wins! ***" << endl;
+        cout << endl << "*** ROUND OVER. Player X wins! ***" << endl;
         x_score++;
     }
 
     if (O_win) {
-        cout << "*** ROUND OVER. Player O wins! ***" << endl;
+        cout << endl << "*** ROUND OVER. Player O wins! ***" << endl;
         o_score++;
     }
 
     if (!X_win && !O_win) {
-        cout << "*** ROUND OVER. It was a tie! ***" << endl;
+        cout << endl << "*** ROUND OVER. It was a tie! ***" << endl;
         num_ties++;
     }
 }
@@ -257,6 +260,9 @@ void invoke_start_tic_tac_toe_simulation() {
     int x_score = 0, o_score = 0, num_ties = 0;
     bool keep_playing = true;
     bool first_move_X = true; //represents which player it going first this round, X first is true, O first is false
+
+    //[OUTPUT] Initial instructions for the game
+    cout << "Welcome to Tic Tac Toe! For the first round, X will start. Afterwards, the starting player will alternate between X and O. At the end of each round, you can chose to keep playing or to stop." << endl;
 
     //[PROCESSING] This continues running until the players choose to end the game
     while (keep_playing) {
